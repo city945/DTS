@@ -55,6 +55,8 @@ class WaymoDataset(DatasetTemplate):
             with open(info_path, 'rb') as f:
                 infos = pickle.load(f)
                 waymo_infos.extend(infos)
+        if self.dataset_cfg.get("DEBUG", False):
+            waymo_infos = waymo_infos[:16]
 
         self.infos.extend(waymo_infos[:])
         self.logger.info('Total skipped info %s' % num_skipped_infos)
@@ -369,7 +371,7 @@ if __name__ == '__main__':
     if args.func == 'create_waymo_infos':
         import yaml
         from easydict import EasyDict
-        dataset_cfg = EasyDict(yaml.load(open(args.cfg_file)))
+        dataset_cfg = EasyDict(yaml.safe_load(open(args.cfg_file)))
         ROOT_DIR = (Path(__file__).resolve().parent / '../../../').resolve()
         create_waymo_infos(
             dataset_cfg=dataset_cfg,

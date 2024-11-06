@@ -21,7 +21,7 @@ def compute_angles(pc_np):
     return theta, phi
 
 def beam_label(theta, beam):
-    estimator=KMeans(n_clusters=beam)
+    estimator=KMeans(n_clusters=beam, n_init=10)
     res=estimator.fit_predict(theta.reshape(-1, 1))
     label=estimator.labels_
     centroids=estimator.cluster_centers_
